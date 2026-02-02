@@ -5,957 +5,491 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Charlotte's A-Level Revision App</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
-        
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-        }
-        
-        header {
-            text-align: center;
-            color: white;
-            margin-bottom: 30px;
-        }
-        
-        header h1 {
-            font-size: 2.2em;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
-        }
-        
-        header p {
-            opacity: 0.9;
-            font-size: 1.1em;
-        }
-        
-        .card {
-            background: white;
-            border-radius: 16px;
-            padding: 25px;
-            margin-bottom: 20px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-        }
-        
-        .subject-selector {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin-bottom: 20px;
-        }
-        
-        .subject-btn {
-            padding: 12px 24px;
-            border: none;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 1em;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-        
-        .subject-btn.psychology {
-            background: linear-gradient(135deg, #FF9800, #F57C00);
-            color: white;
-        }
-        
-        .subject-btn.pe {
-            background: linear-gradient(135deg, #f44336, #c62828);
-            color: white;
-        }
-        
-        .subject-btn.english {
-            background: linear-gradient(135deg, #4CAF50, #2E7D32);
-            color: white;
-        }
-        
-        .subject-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-        }
-        
-        .subject-btn.active {
-            ring: 4px solid white;
-            box-shadow: 0 0 0 4px rgba(255,255,255,0.5);
-        }
-        
-        .topic-selector {
-            margin-bottom: 20px;
-        }
-        
-        .topic-selector select {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 1em;
-            cursor: pointer;
-        }
-        
-        .question-box {
-            background: #f8f9fa;
-            border-left: 4px solid #667eea;
-            padding: 20px;
-            border-radius: 0 8px 8px 0;
-            margin-bottom: 20px;
-        }
-        
-        .question-box .marks {
-            display: inline-block;
-            background: #667eea;
-            color: white;
-            padding: 4px 12px;
-            border-radius: 12px;
-            font-size: 0.85em;
-            margin-bottom: 10px;
-        }
-        
-        .question-box .question-text {
-            font-size: 1.1em;
-            line-height: 1.6;
-            color: #333;
-        }
-        
-        .answer-area {
-            margin-bottom: 20px;
-        }
-        
-        .answer-area label {
-            display: block;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: #333;
-        }
-        
-        .answer-area textarea {
-            width: 100%;
-            min-height: 200px;
-            padding: 15px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 1em;
-            line-height: 1.6;
-            resize: vertical;
-            transition: border-color 0.3s;
-        }
-        
-        .answer-area textarea:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-        
-        .word-count {
-            text-align: right;
-            color: #666;
-            font-size: 0.9em;
-            margin-top: 5px;
-        }
-        
-        .btn-primary {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            border: none;
-            padding: 15px 40px;
-            border-radius: 25px;
-            font-size: 1.1em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: block;
-            width: 100%;
-        }
-        
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
-        }
-        
-        .btn-primary:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-        }
-        
-        .btn-secondary {
-            background: #f0f0f0;
-            color: #333;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 25px;
-            font-size: 1em;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 10px;
-        }
-        
-        .btn-secondary:hover {
-            background: #e0e0e0;
-        }
-        
-        .feedback-section {
-            display: none;
-        }
-        
-        .feedback-section.visible {
-            display: block;
-        }
-        
-        .mark-display {
-            text-align: center;
-            padding: 20px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            border-radius: 12px;
-            color: white;
-            margin-bottom: 20px;
-        }
-        
-        .mark-display .mark {
-            font-size: 3em;
-            font-weight: bold;
-        }
-        
-        .mark-display .mark-label {
-            font-size: 1.1em;
-            opacity: 0.9;
-        }
-        
-        .grade-indicator {
-            display: inline-block;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-weight: bold;
-            margin-top: 10px;
-        }
-        
-        .grade-a { background: #4CAF50; }
-        .grade-b { background: #8BC34A; }
-        .grade-c { background: #FFC107; color: #333; }
-        .grade-d { background: #FF9800; }
-        .grade-e { background: #f44336; }
-        
-        .feedback-box {
-            background: #f8f9fa;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 15px;
-        }
-        
-        .feedback-box h3 {
-            color: #333;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .feedback-box.strengths {
-            border-left: 4px solid #4CAF50;
-        }
-        
-        .feedback-box.improvements {
-            border-left: 4px solid #FF9800;
-        }
-        
-        .feedback-box.model-points {
-            border-left: 4px solid #2196F3;
-        }
-        
-        .feedback-box ul {
-            margin-left: 20px;
-            line-height: 1.8;
-        }
-        
-        .feedback-box p {
-            line-height: 1.6;
-        }
-        
-        .loading {
-            text-align: center;
-            padding: 40px;
-        }
-        
-        .loading .spinner {
-            width: 50px;
-            height: 50px;
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #667eea;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 20px;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        .stats-bar {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-            margin-bottom: 20px;
-        }
-        
-        .stat-item {
-            background: #f8f9fa;
-            padding: 15px 20px;
-            border-radius: 8px;
-            text-align: center;
-            flex: 1;
-            min-width: 120px;
-        }
-        
-        .stat-item .stat-value {
-            font-size: 1.8em;
-            font-weight: bold;
-            color: #667eea;
-        }
-        
-        .stat-item .stat-label {
-            font-size: 0.85em;
-            color: #666;
-        }
-        
-        .hidden {
-            display: none;
-        }
-        
-        .mark-scheme-toggle {
-            background: #e8f4fd;
-            border: 1px solid #90caf9;
-            border-radius: 8px;
-            padding: 15px;
-            margin-top: 15px;
-            cursor: pointer;
-        }
-        
-        .mark-scheme-toggle summary {
-            font-weight: 600;
-            color: #1976D2;
-        }
-        
-        .mark-scheme-content {
-            margin-top: 10px;
-            padding-top: 10px;
-            border-top: 1px solid #90caf9;
-            font-size: 0.95em;
-            line-height: 1.6;
-        }
-
-        .api-key-section {
-            background: #fff3e0;
-            border: 1px solid #ffcc80;
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 20px;
-        }
-
-        .api-key-section input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            margin-top: 8px;
-            font-family: monospace;
-        }
-
-        .api-key-section small {
-            color: #666;
-            display: block;
-            margin-top: 8px;
-        }
-
-        @media (max-width: 600px) {
-            .subject-selector {
-                flex-direction: column;
-            }
-            
-            .subject-btn {
-                width: 100%;
-            }
-            
-            .stats-bar {
-                flex-direction: column;
-            }
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        header { text-align: center; color: white; margin-bottom: 30px; }
+        header h1 { font-size: 2.2em; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.2); }
+        header p { opacity: 0.9; font-size: 1.1em; }
+        .card { background: white; border-radius: 16px; padding: 25px; margin-bottom: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); }
+        .subject-selector { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; }
+        .subject-btn { padding: 12px 24px; border: none; border-radius: 25px; cursor: pointer; font-size: 1em; font-weight: 600; transition: all 0.3s ease; }
+        .subject-btn.psychology { background: linear-gradient(135deg, #FF9800, #F57C00); color: white; }
+        .subject-btn.pe { background: linear-gradient(135deg, #f44336, #c62828); color: white; }
+        .subject-btn.english { background: linear-gradient(135deg, #4CAF50, #2E7D32); color: white; }
+        .subject-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(0,0,0,0.2); }
+        .subject-btn.active { box-shadow: 0 0 0 4px rgba(255,255,255,0.5); }
+        .topic-selector { margin-bottom: 20px; }
+        .topic-selector select { width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1em; cursor: pointer; }
+        .question-box { background: #f8f9fa; border-left: 4px solid #667eea; padding: 20px; border-radius: 0 8px 8px 0; margin-bottom: 20px; }
+        .question-meta { display: flex; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
+        .question-box .marks { display: inline-block; background: #667eea; color: white; padding: 4px 12px; border-radius: 12px; font-size: 0.85em; }
+        .question-box .paper-tag { display: inline-block; background: #e0e0e0; color: #333; padding: 4px 12px; border-radius: 12px; font-size: 0.85em; }
+        .question-box .question-text { font-size: 1.1em; line-height: 1.6; color: #333; }
+        .answer-area { margin-bottom: 20px; }
+        .answer-area label { display: block; font-weight: 600; margin-bottom: 8px; color: #333; }
+        .answer-area textarea { width: 100%; min-height: 200px; padding: 15px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1em; line-height: 1.6; resize: vertical; transition: border-color 0.3s; }
+        .answer-area textarea:focus { outline: none; border-color: #667eea; }
+        .word-count { text-align: right; color: #666; font-size: 0.9em; margin-top: 5px; }
+        .btn-primary { background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; padding: 15px 40px; border-radius: 25px; font-size: 1.1em; font-weight: 600; cursor: pointer; transition: all 0.3s ease; display: block; width: 100%; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4); }
+        .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+        .btn-secondary { background: #f0f0f0; color: #333; border: none; padding: 12px 30px; border-radius: 25px; font-size: 1em; cursor: pointer; transition: all 0.3s ease; margin-top: 10px; }
+        .btn-secondary:hover { background: #e0e0e0; }
+        .feedback-section { display: none; }
+        .feedback-section.visible { display: block; }
+        .mark-display { text-align: center; padding: 20px; background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 12px; color: white; margin-bottom: 20px; }
+        .mark-display .mark { font-size: 3em; font-weight: bold; }
+        .mark-display .mark-label { font-size: 1.1em; opacity: 0.9; }
+        .grade-indicator { display: inline-block; padding: 5px 15px; border-radius: 20px; font-weight: bold; margin-top: 10px; }
+        .grade-a { background: #4CAF50; } .grade-b { background: #8BC34A; } .grade-c { background: #FFC107; color: #333; } .grade-d { background: #FF9800; } .grade-e { background: #f44336; }
+        .feedback-box { background: #f8f9fa; border-radius: 8px; padding: 20px; margin-bottom: 15px; }
+        .feedback-box h3 { color: #333; margin-bottom: 10px; }
+        .feedback-box.strengths { border-left: 4px solid #4CAF50; }
+        .feedback-box.improvements { border-left: 4px solid #FF9800; }
+        .feedback-box.model-points { border-left: 4px solid #2196F3; }
+        .feedback-box ul { margin-left: 20px; line-height: 1.8; }
+        .loading { text-align: center; padding: 40px; }
+        .loading .spinner { width: 50px; height: 50px; border: 4px solid #f3f3f3; border-top: 4px solid #667eea; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 20px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .stats-bar { display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 20px; }
+        .stat-item { background: #f8f9fa; padding: 15px 20px; border-radius: 8px; text-align: center; flex: 1; min-width: 100px; }
+        .stat-item .stat-value { font-size: 1.6em; font-weight: bold; color: #667eea; }
+        .stat-item .stat-label { font-size: 0.8em; color: #666; }
+        .question-count { text-align: center; color: #666; font-size: 0.9em; margin-bottom: 15px; }
+        .hidden { display: none; }
+        .mark-scheme-toggle { background: #e8f4fd; border: 1px solid #90caf9; border-radius: 8px; padding: 15px; margin-top: 15px; }
+        .mark-scheme-toggle summary { font-weight: 600; color: #1976D2; cursor: pointer; }
+        .mark-scheme-content { margin-top: 10px; padding-top: 10px; border-top: 1px solid #90caf9; font-size: 0.95em; line-height: 1.6; }
+        .api-key-section { background: #fff3e0; border: 1px solid #ffcc80; border-radius: 8px; padding: 15px; margin-bottom: 20px; }
+        .api-key-section input { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; margin-top: 8px; font-family: monospace; }
+        .api-key-section small { color: #666; display: block; margin-top: 8px; }
+        @media (max-width: 600px) { .subject-selector { flex-direction: column; } .subject-btn { width: 100%; } .stats-bar { flex-direction: column; } header h1 { font-size: 1.6em; } }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
             <h1>🎓 Charlotte's A-Level Revision</h1>
-            <p>Practice questions with AI-powered marking and feedback</p>
+            <p>100+ practice questions with AI-powered marking</p>
         </header>
-        
-        <!-- Stats Bar -->
         <div class="card">
             <div class="stats-bar">
-                <div class="stat-item">
-                    <div class="stat-value" id="questionsAttempted">0</div>
-                    <div class="stat-label">Questions Attempted</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-value" id="averageMark">-</div>
-                    <div class="stat-label">Average %</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-value" id="streak">0</div>
-                    <div class="stat-label">Day Streak 🔥</div>
-                </div>
+                <div class="stat-item"><div class="stat-value" id="questionsAttempted">0</div><div class="stat-label">Attempted</div></div>
+                <div class="stat-item"><div class="stat-value" id="averageMark">-</div><div class="stat-label">Average %</div></div>
+                <div class="stat-item"><div class="stat-value" id="streak">0</div><div class="stat-label">Streak 🔥</div></div>
+                <div class="stat-item"><div class="stat-value" id="totalQuestions">100+</div><div class="stat-label">Questions</div></div>
             </div>
         </div>
-
-        <!-- API Key Section -->
         <div class="card api-key-section" id="apiKeySection">
-            <h3>🔑 Setup: Enter Claude API Key</h3>
-            <p style="margin-top: 10px; font-size: 0.95em;">To enable AI marking, you need a Claude API key. Get one free at <a href="https://console.anthropic.com/" target="_blank">console.anthropic.com</a></p>
+            <h3>🔑 Setup: Claude API Key (Optional)</h3>
+            <p style="margin-top: 10px; font-size: 0.95em;">For AI-powered marking, add your Claude API key from <a href="https://console.anthropic.com/" target="_blank">console.anthropic.com</a>. Without it, basic marking mode is used.</p>
             <input type="password" id="apiKey" placeholder="sk-ant-..." />
-            <small>Your key is stored locally and never sent anywhere except Anthropic's API for marking.</small>
+            <small>Your key is stored locally in your browser only.</small>
             <button class="btn-secondary" onclick="saveApiKey()" style="margin-top: 10px;">Save Key</button>
         </div>
-        
-        <!-- Question Section -->
         <div class="card" id="questionSection">
             <h2 style="margin-bottom: 20px;">📝 Practice Question</h2>
-            
             <div class="subject-selector">
                 <button class="subject-btn psychology active" onclick="selectSubject('psychology')">Psychology</button>
                 <button class="subject-btn pe" onclick="selectSubject('pe')">PE</button>
                 <button class="subject-btn english" onclick="selectSubject('english')">English</button>
             </div>
-            
             <div class="topic-selector">
-                <select id="topicSelect" onchange="loadQuestion()">
-                    <option value="">Select a topic...</option>
-                </select>
+                <select id="topicSelect" onchange="loadQuestion()"><option value="">Select a topic...</option></select>
             </div>
-            
+            <div class="question-count" id="questionCount"></div>
             <div class="question-box" id="questionBox">
-                <span class="marks" id="questionMarks">[4 marks]</span>
+                <div class="question-meta">
+                    <span class="marks" id="questionMarks">[4 marks]</span>
+                    <span class="paper-tag" id="paperTag">Component 1</span>
+                </div>
                 <p class="question-text" id="questionText">Select a subject and topic to begin...</p>
             </div>
-            
             <div class="answer-area">
                 <label for="answerInput">Your Answer:</label>
                 <textarea id="answerInput" placeholder="Type your answer here... Write as you would in an exam."></textarea>
                 <div class="word-count"><span id="wordCount">0</span> words</div>
             </div>
-            
-            <button class="btn-primary" id="submitBtn" onclick="submitAnswer()">
-                ✨ Mark My Answer
-            </button>
-            
-            <button class="btn-secondary" onclick="skipQuestion()" style="width: 100%;">
-                Skip → Next Question
-            </button>
+            <button class="btn-primary" id="submitBtn" onclick="submitAnswer()">✨ Mark My Answer</button>
+            <button class="btn-secondary" onclick="skipQuestion()" style="width: 100%;">Skip → Next Question</button>
         </div>
-        
-        <!-- Loading Section -->
         <div class="card hidden" id="loadingSection">
             <div class="loading">
                 <div class="spinner"></div>
                 <p>Analysing your answer...</p>
-                <p style="color: #666; font-size: 0.9em;">Comparing against mark scheme criteria</p>
             </div>
         </div>
-        
-        <!-- Feedback Section -->
         <div class="card feedback-section" id="feedbackSection">
             <div class="mark-display">
                 <div class="mark"><span id="markAwarded">0</span>/<span id="markTotal">4</span></div>
                 <div class="mark-label">marks awarded</div>
                 <div class="grade-indicator grade-a" id="gradeIndicator">Grade A Standard</div>
             </div>
-            
-            <div class="feedback-box strengths">
-                <h3>✅ What You Did Well</h3>
-                <div id="strengthsFeedback"></div>
-            </div>
-            
-            <div class="feedback-box improvements">
-                <h3>🎯 How To Improve</h3>
-                <div id="improvementsFeedback"></div>
-            </div>
-            
-            <div class="feedback-box model-points">
-                <h3>💡 Key Points You Could Add</h3>
-                <div id="modelPointsFeedback"></div>
-            </div>
-            
-            <details class="mark-scheme-toggle">
-                <summary>📋 View Mark Scheme</summary>
-                <div class="mark-scheme-content" id="markSchemeContent"></div>
-            </details>
-            
-            <button class="btn-primary" onclick="nextQuestion()" style="margin-top: 20px;">
-                Next Question →
-            </button>
+            <div class="feedback-box strengths"><h3>✅ What You Did Well</h3><div id="strengthsFeedback"></div></div>
+            <div class="feedback-box improvements"><h3>🎯 How To Improve</h3><div id="improvementsFeedback"></div></div>
+            <div class="feedback-box model-points"><h3>💡 Key Points You Could Add</h3><div id="modelPointsFeedback"></div></div>
+            <details class="mark-scheme-toggle"><summary>📋 View Mark Scheme & Model Answer</summary><div class="mark-scheme-content" id="markSchemeContent"></div></details>
+            <button class="btn-primary" onclick="nextQuestion()" style="margin-top: 20px;">Next Question →</button>
         </div>
     </div>
+<script>
+const questionBank = {
 
-    <script>
-        // Question Bank
-        const questionBank = {
-            psychology: {
-                'Biological Approach': [
-                    {
-                        question: "Outline two assumptions of the biological approach.",
-                        marks: 4,
-                        markScheme: "2 marks per assumption. Must identify assumption (1) and elaborate/exemplify (1). Valid assumptions: behaviour has genetic basis, neurochemistry affects behaviour, brain structure affects behaviour, evolution influences behaviour.",
-                        modelAnswer: "One assumption is that behaviour has a genetic basis - characteristics can be inherited through genes, explaining why traits run in families. Twin studies support this. A second assumption is that neurochemistry affects behaviour - neurotransmitters like serotonin influence mood (low serotonin linked to depression)."
-                    },
-                    {
-                        question: "Explain one strength and one weakness of drug therapy.",
-                        marks: 4,
-                        markScheme: "2 marks per point. Must identify strength/weakness (1) and elaborate with evidence or example (1).",
-                        modelAnswer: "Strength: Research support - Kirsch et al.'s meta-analysis showed SSRIs effective for severe depression. Weakness: Side effects - SSRIs can cause nausea, insomnia, and increased suicidal thoughts in young people, raising ethical concerns."
-                    },
-                    {
-                        question: "Evaluate the biological approach in psychology. [8 marks]",
-                        marks: 8,
-                        markScheme: "AO1 (2 marks): Brief description of approach. AO3 (6 marks): At least 2 strengths and 2 weaknesses with evidence. Top band requires comparison with other approaches.",
-                        modelAnswer: "Strengths: Scientific methods (brain scans provide objective data - Raine et al. PET scans), practical applications (drug therapy). Weaknesses: Reductionist (ignores environment/cognition), deterministic (no free will - implications for responsibility). Unlike cognitive approach, focuses on biology not mental processes."
-                    }
-                ],
-                'Cognitive Approach': [
-                    {
-                        question: "Describe the main features of CBT (Cognitive Behavioural Therapy).",
-                        marks: 4,
-                        markScheme: "1 mark per feature clearly described. Features include: identifying negative thoughts, challenging thoughts, developing alternatives, behavioural experiments, thought diaries, Socratic questioning.",
-                        modelAnswer: "CBT identifies negative automatic thoughts using thought diaries. Thoughts are challenged through Socratic questioning ('What's the evidence?'). Clients develop more balanced alternative thoughts. Behavioural experiments test whether negative predictions come true."
-                    },
-                    {
-                        question: "Evaluate CBT as a treatment for depression.",
-                        marks: 6,
-                        markScheme: "AO3: At least 2 strengths and 1 weakness OR 1 strength and 2 weaknesses. Must include research evidence for top marks. Consider effectiveness, suitability, comparison with alternatives.",
-                        modelAnswer: "Strengths: NICE recommended, research support (Butler et al. meta-analysis showed large effect sizes), addresses cause not just symptoms. Weaknesses: Requires motivation (unsuitable for severe depression), time-consuming (6-20 sessions), may oversimplify - not all problems are cognitive."
-                    }
-                ],
-                'Research Methods': [
-                    {
-                        question: "Explain the difference between reliability and validity.",
-                        marks: 4,
-                        markScheme: "2 marks per concept. Must define (1) and elaborate/exemplify (1). Reliability = consistency; Validity = measures what it claims to.",
-                        modelAnswer: "Reliability refers to consistency - whether findings would be the same if the study were repeated. Validity refers to whether a study measures what it claims to measure. A study can be reliable but not valid (consistently measuring the wrong thing)."
-                    },
-                    {
-                        question: "A researcher wants to study whether caffeine affects reaction time. Describe how they could design a laboratory experiment.",
-                        marks: 6,
-                        markScheme: "1 mark each for: appropriate design (independent groups/repeated measures with justification), clear IV and DV (operationalised), sampling method, standardised procedures, controls, ethical considerations.",
-                        modelAnswer: "Use independent groups design (caffeine vs placebo) to avoid practice effects. IV: caffeine (200mg) vs placebo drink. DV: reaction time in milliseconds on computer task. Random allocation to conditions. Standardise: same time of day, same task, same instructions. Control caffeine intake beforehand. Informed consent, right to withdraw."
-                    }
-                ]
-            },
-            pe: {
-                'Energy Systems': [
-                    {
-                        question: "Describe the ATP-PC system and explain when it is predominantly used.",
-                        marks: 4,
-                        markScheme: "Description (2): PC breakdown, creatine kinase enzyme, ATP resynthesis, anaerobic, 1 ATP yield. Application (2): duration (10 secs), intensity (maximal), sporting example.",
-                        modelAnswer: "Phosphocreatine (PC) is broken down by creatine kinase to release energy for ATP resynthesis. It's anaerobic, produces 1 ATP per PC molecule, and has no fatiguing by-products. Predominantly used for high-intensity activities lasting up to 10 seconds, e.g., 100m sprint start, shot put, high jump take-off."
-                    },
-                    {
-                        question: "Analyse the contribution of energy systems during a 400m race.",
-                        marks: 8,
-                        markScheme: "All three systems explained with timing. Application to 400m specifically. Understanding of energy continuum (systems work simultaneously). Reference to fatigue/lactic acid for top marks.",
-                        modelAnswer: "ATP-PC dominant for first 100m (0-10s) during explosive acceleration. Anaerobic glycolytic becomes dominant from 100-350m as PC depletes - produces lactic acid causing 'tie-up' in final stages. Aerobic makes small contribution throughout (~15-20%) but cannot provide ATP fast enough for 400m pace. All three work simultaneously with varying dominance - energy continuum."
-                    }
-                ],
-                'Biomechanics': [
-                    {
-                        question: "Using Newton's Laws, explain how a sprinter accelerates from the blocks.",
-                        marks: 6,
-                        markScheme: "2 marks per law: name law (1), apply to sprinter specifically (1). Must show understanding of how laws work together.",
-                        modelAnswer: "1st Law (Inertia): Sprinter at rest stays at rest until force applied from pushing against blocks. 2nd Law (F=ma): Greater force against blocks = greater acceleration. More leg strength means faster start. 3rd Law: Push backwards against blocks (action), blocks push forward (reaction) propelling sprinter out."
-                    },
-                    {
-                        question: "Explain how a diver controls their rate of rotation using angular momentum.",
-                        marks: 4,
-                        markScheme: "Define angular momentum (L=Iω). Explain conservation principle. Apply to tucking (decreases I, increases ω) and extending (increases I, decreases ω).",
-                        modelAnswer: "Angular momentum (L=Iω) is conserved once diver leaves board. Tucking brings mass closer to axis of rotation, decreasing moment of inertia (I), so angular velocity (ω) must increase to keep L constant - faster spin. Extending before entry increases I, decreases ω for controlled entry."
-                    }
-                ],
-                'Sport Psychology': [
-                    {
-                        question: "Describe Bandura's four sources of self-efficacy.",
-                        marks: 4,
-                        markScheme: "1 mark per source correctly identified and briefly explained. Sources: performance accomplishments, vicarious experience, verbal persuasion, emotional arousal.",
-                        modelAnswer: "1. Performance accomplishments - past success (strongest source). 2. Vicarious experience - watching similar others succeed. 3. Verbal persuasion - encouragement from coaches/peers. 4. Emotional arousal - interpreting physical state (anxiety vs excitement)."
-                    }
-                ]
-            },
-            english: {
-                'A Streetcar Named Desire': [
-                    {
-                        question: "Analyse how Williams uses light symbolism in 'A Streetcar Named Desire'.",
-                        marks: 6,
-                        markScheme: "AO2: Analysis of light/dark symbolism with specific examples. Must discuss: Blanche's aversion to light, paper lantern, connection to truth/illusion. AO3: Link to context (appearance vs reality theme) for top marks.",
-                        modelAnswer: "Light symbolises truth and exposure - Blanche avoids bright light because it reveals her age and past. The paper lantern she places over the naked bulb represents her attempt to beautify harsh reality. Stage direction 'she winces' in bright light creates visual motif linking illumination with painful truth. Stanley's destruction of the lantern symbolically destroys her protective illusions."
-                    },
-                    {
-                        question: "How does Williams present the conflict between Stanley and Blanche? [8 marks]",
-                        marks: 8,
-                        markScheme: "AO2: Analysis of dramatic techniques, language contrast, staging. AO3: Context (Old South vs New America, class conflict). Must discuss specific techniques with examples.",
-                        modelAnswer: "Williams presents conflict through contrasting registers: Stanley's direct, colloquial language ('Meat!') versus Blanche's elaborate Southern rhetoric and euphemism. Dramatically, Stanley's physical presence dominates space while Blanche retreats. The conflict represents cultural clash between declining Old South (gentility, illusion) and New America (immigrant working-class, brutal honesty). Stage directions emphasise Stanley's animalistic qualities ('Tiger! Tiger!') against Blanche's fragility."
-                    }
-                ],
-                'Things Fall Apart': [
-                    {
-                        question: "Analyse how Achebe uses narrative voice in 'Things Fall Apart'.",
-                        marks: 6,
-                        markScheme: "AO2: Analysis of third-person limited, free indirect discourse, incorporation of Igbo elements. Must discuss specific techniques with examples. AO3: Postcolonial context (reclaiming narrative voice) for top marks.",
-                        modelAnswer: "Achebe uses third-person limited perspective aligned with Okonkwo, creating sympathy while maintaining critical distance during violence. Free indirect discourse ('His whole life was dominated by fear') reveals inner psychology. Igbo proverbs embedded throughout ('palm-oil with which words are eaten') validate oral tradition. The devastating shift to the Commissioner's perspective in the final chapter enacts colonial narrative violence - Okonkwo's life reduced to 'a reasonable paragraph'."
-                    },
-                    {
-                        question: "How does Achebe present Okonkwo's tragic flaw?",
-                        marks: 6,
-                        markScheme: "AO2: Analysis of characterisation techniques. Must identify flaw (fear of weakness) and show how it's presented through narrative, action, language. AO3: Link to Igbo culture and colonial context.",
-                        modelAnswer: "Okonkwo's tragic flaw is fear of weakness, explicitly stated through free indirect discourse: 'His whole life was dominated by fear, the fear of failure and of weakness.' This fear drives excessive aggression - beating his wife during the Week of Peace, killing Ikemefuna despite affection. Achebe presents this flaw as both personal tragedy and cultural critique - Okonkwo's rigid masculinity prevents adaptation to change, leading to his suicide when he cannot reconcile his values with colonial reality."
-                    }
-                ],
-                'Literary Terminology': [
-                    {
-                        question: "Define 'semantic field' and 'foregrounding', giving examples of how writers use them.",
-                        marks: 4,
-                        markScheme: "2 marks per term: accurate definition (1) and clear example of usage (1).",
-                        modelAnswer: "Semantic field: a group of words related in meaning. A writer might use a semantic field of war ('battle', 'fight', 'victory', 'defeat') to characterise a relationship as conflict. Foregrounding: making something stand out through deviation from expected patterns - unusual word order, repetition, or breaking conventions. E.g., the isolated short sentence 'Gone.' after long flowing sentences creates emphasis through structural deviation."
-                    }
-                ]
-            }
-        };
+psychology: {
+'Biological Approach': [
+{q: "Outline two assumptions of the biological approach.", m: 4, p: "Component 1", ms: "2 marks per assumption with elaboration. Valid: genetic basis, neurochemistry, brain structure, evolution.", ma: "1) Behaviour has genetic basis - inherited through genes, explaining why traits run in families. Twin studies support this. 2) Neurochemistry affects behaviour - neurotransmitters like serotonin influence mood (low serotonin linked to depression)."},
+{q: "Explain one strength and one weakness of drug therapy.", m: 4, p: "Component 1", ms: "2 marks per point with evidence/example.", ma: "Strength: Research support - Kirsch et al meta-analysis showed SSRIs effective for severe depression. Weakness: Side effects - nausea, insomnia, increased suicidal thoughts in young people."},
+{q: "Evaluate the biological approach in psychology.", m: 8, p: "Component 1", ms: "AO1 (2): Brief description. AO3 (6): 2+ strengths, 2+ weaknesses with evidence. Comparison needed for top band.", ma: "Strengths: Scientific methods (brain scans - Raine et al PET scans), practical applications (drug therapy). Weaknesses: Reductionist (ignores environment), deterministic (no free will). Unlike cognitive approach, focuses on biology not mental processes."},
+{q: "Describe how genes may influence behaviour.", m: 4, p: "Component 1", ms: "Genetic transmission, twin/adoption studies, link to behaviour.", ma: "Genes are inherited units containing DNA instructions. They influence behaviour by affecting brain structure, neurotransmitter levels, hormones. Twin studies show higher concordance in identical twins for intelligence and mental disorders."},
+{q: "Explain how neurotransmitters affect human behaviour.", m: 6, p: "Component 1", ms: "Definition, synaptic transmission, specific examples with effects.", ma: "Neurotransmitters are chemical messengers transmitting signals across synapses. Released from presynaptic terminal, bind to receptors on postsynaptic neuron. Serotonin regulates mood (low = depression). Dopamine affects reward (excess = schizophrenia)."},
+{q: "Describe and evaluate one biological therapy.", m: 12, p: "Component 1", ms: "AO1 (6): Mechanism, types, administration. AO3 (6): Evidence, ethics, comparison.", ma: "Drug therapy: SSRIs block serotonin reuptake for depression. Antipsychotics block dopamine for schizophrenia. Strengths: Research support, quick relief. Weaknesses: Side effects, treats symptoms not cause, ethical issues."}
+],
+'Cognitive Approach': [
+{q: "Describe the main features of CBT.", m: 4, p: "Component 1", ms: "1 mark per feature: thought identification, challenging, alternatives, behavioural experiments.", ma: "CBT identifies negative automatic thoughts using diaries. Thoughts challenged through Socratic questioning. Clients develop balanced alternatives. Behavioural experiments test predictions."},
+{q: "Evaluate CBT as a treatment for depression.", m: 6, p: "Component 1", ms: "2+ strengths and/or weaknesses with research evidence.", ma: "Strengths: NICE recommended, Butler et al meta-analysis showed large effects, addresses cause not symptoms. Weaknesses: Requires motivation, time-consuming, may oversimplify."},
+{q: "Outline two assumptions of the cognitive approach.", m: 4, p: "Component 1", ms: "2 marks per assumption with elaboration.", ma: "1) Internal mental processes can be studied scientifically using inference from behaviour. 2) Mind works like information processor - receiving input, processing, producing output."},
+{q: "Explain what is meant by a schema.", m: 4, p: "Component 1", ms: "Definition, development, effect on processing, example of bias.", ma: "A schema is a mental framework built from experience helping process information quickly. Can cause biases - confirmation bias (noticing confirming evidence), or negative schemas in depression distorting neutral events."},
+{q: "Evaluate the cognitive approach.", m: 8, p: "Component 1", ms: "Balanced evaluation with evidence and comparison.", ma: "Strengths: Scientific methods, successful applications (CBT). Weaknesses: Machine reductionism (too simplistic), lab experiments lack ecological validity. Unlike biological approach, focuses on thought processes."},
+{q: "Describe Beck's cognitive theory of depression.", m: 6, p: "Component 1", ms: "Negative triad, cognitive distortions, cycle.", ma: "Beck proposed depression results from negative schemas. Negative triad: negative views of self, world, future. Cognitive distortions maintain it: overgeneralisation, catastrophising. Creates cycle maintaining symptoms."}
+],
+'Psychodynamic Approach': [
+{q: "Outline two assumptions of the psychodynamic approach.", m: 4, p: "Component 1", ms: "2 marks per assumption.", ma: "1) Unconscious mind influences behaviour - we're unaware of true causes driven by repressed memories. 2) Early childhood experiences shape adult personality - first five years create lasting patterns."},
+{q: "Describe the structure of personality according to Freud.", m: 6, p: "Component 1", ms: "Id, Ego, Superego with functions.", ma: "Id: present from birth, pleasure principle, demands instant gratification. Ego: develops early childhood, reality principle, mediates. Superego: develops age 5, morality principle, creates guilt."},
+{q: "Explain two defence mechanisms.", m: 4, p: "Component 1", ms: "2 marks per mechanism with example.", ma: "Repression: pushing threatening memories into unconscious - forgetting trauma. Displacement: redirecting emotions to safer target - angry at boss, shout at family."},
+{q: "Evaluate the psychodynamic approach.", m: 8, p: "Component 1", ms: "Balanced with evidence.", ma: "Strengths: First to emphasise unconscious and childhood, influential. Weaknesses: Unfalsifiable, based on biased case studies, overemphasis on sexuality, gender-biased."},
+{q: "Describe psychoanalysis as a therapy.", m: 6, p: "Component 1", ms: "Aim, techniques, insight.", ma: "Aims to bring unconscious conflicts to awareness. Free association reveals unconscious links. Dream analysis interprets latent content. Therapist interprets resistance and transference."}
+],
+'Behaviourist Approach': [
+{q: "Outline two assumptions of the behaviourist approach.", m: 4, p: "Component 1", ms: "2 marks per assumption.", ma: "1) All behaviour learned from environment through conditioning - born as blank slates. 2) Psychology should only study observable behaviour, not mental processes, to be scientific."},
+{q: "Explain classical conditioning using an example.", m: 4, p: "Component 1", ms: "Process with terminology (UCS, UCR, NS, CS, CR), clear example.", ma: "Learning through association. Pavlov: Food (UCS) causes salivation (UCR). Bell (NS) paired with food. Eventually bell alone (CS) causes salivation (CR)."},
+{q: "Explain positive and negative reinforcement.", m: 4, p: "Component 1", ms: "Clear definitions showing both INCREASE behaviour.", ma: "Both increase behaviour. Positive: adding pleasant stimulus - sweets for tidying. Negative: removing unpleasant - painkillers remove headache, increasing painkiller use."},
+{q: "Describe systematic desensitisation.", m: 6, p: "Component 1", ms: "Counterconditioning, hierarchy, relaxation, gradual exposure.", ma: "Treats phobias through counterconditioning. Create anxiety hierarchy. Learn relaxation. While relaxed, face feared stimulus from lowest level. Progress up hierarchy."},
+{q: "Evaluate the behaviourist approach.", m: 8, p: "Component 1", ms: "Balanced with evidence, comparison.", ma: "Strengths: Scientific/objective, practical applications for phobias. Weaknesses: Deterministic, ignores thoughts/emotions, animal research may not generalise."}
+],
+'Positive Approach': [
+{q: "Outline two assumptions of positive psychology.", m: 4, p: "Component 1", ms: "2 marks per assumption.", ma: "1) Psychology should focus on strengths and wellbeing, not just disorders. 2) Wellbeing can be measured scientifically and improved through evidence-based interventions."},
+{q: "Describe the PERMA model of wellbeing.", m: 5, p: "Component 1", ms: "1 mark per component.", ma: "Positive Emotions - joy, gratitude. Engagement - flow in activities. Relationships - social connections. Meaning - purpose beyond self. Achievement - mastery and accomplishment."},
+{q: "Evaluate the positive psychology approach.", m: 8, p: "Component 1", ms: "Balanced with evidence.", ma: "Strengths: Shifts focus to wellbeing, evidence-based interventions work. Weaknesses: Western cultural bias, may oversimplify, relatively new field."}
+],
+'Research Methods': [
+{q: "Explain the difference between reliability and validity.", m: 4, p: "Component 2", ms: "2 marks per concept with elaboration.", ma: "Reliability: consistency - same findings if repeated. Validity: measures what it claims to. Can be reliable but not valid (consistently wrong)."},
+{q: "Describe how to design a laboratory experiment on caffeine and reaction time.", m: 6, p: "Component 2", ms: "Design, IV, DV, sampling, standardisation, ethics.", ma: "Independent groups (caffeine vs placebo). IV: 200mg caffeine vs placebo. DV: reaction time in ms on computer task. Random allocation. Same time, task, instructions. Informed consent."},
+{q: "Explain one strength and one weakness of laboratory experiments.", m: 4, p: "Component 2", ms: "2 marks per point.", ma: "Strength: High control allows cause-effect conclusions. Weakness: Low ecological validity - artificial setting doesn't reflect real behaviour."},
+{q: "What are demand characteristics?", m: 4, p: "Component 2", ms: "Definition and effect on findings.", ma: "Cues revealing experiment purpose. Participants may try to please researcher or act unnaturally. Threatens internal validity - behaviour reflects awareness not genuine response."},
+{q: "Explain Type I and Type II errors.", m: 4, p: "Component 2", ms: "Clear definitions.", ma: "Type I (false positive): rejecting null when true - claiming non-existent effect. Type II (false negative): accepting null when false - missing real effect."},
+{q: "When would you use a Mann-Whitney U test?", m: 4, p: "Component 2", ms: "Conditions for use.", ma: "Testing difference between two conditions, independent groups design, ordinal data or interval not meeting parametric assumptions."},
+{q: "Explain the purpose of a pilot study.", m: 3, p: "Component 2", ms: "Definition, purposes, use of findings.", ma: "Small-scale trial before main study. Identifies problems with design, instructions, materials. Findings refine study before full data collection."},
+{q: "A correlation of r=+0.82 between revision hours and grades. What does this tell us?", m: 4, p: "Component 2", ms: "Interpretation and limitation.", ma: "Strong positive correlation - as revision increases, grades tend to increase. Does NOT show causation - third variable possible. Correlation ≠ causation."},
+{q: "Describe two ways to improve reliability of observations.", m: 4, p: "Component 2", ms: "2 marks per method.", ma: "Inter-rater reliability: multiple observers check agreement. Clear behavioural categories: operationalised definitions reduce subjective interpretation."},
+{q: "Explain informed consent and its importance.", m: 4, p: "Component 2", ms: "Definition and importance.", ma: "Participants agree after being told purpose, procedures, rights. Respects autonomy, protects from harm, maintains trust. May need deception with debriefing sometimes."}
+],
+'Controversies': [
+{q: "Explain cultural bias in psychology.", m: 4, p: "Component 3", ms: "Definition, WEIRD samples, impact.", ma: "Research reflects values of culture conducted in. Most participants from WEIRD societies (12% of population). Ethnocentrism assumes Western norms are universal."},
+{q: "Explain emic and etic approaches with an example.", m: 4, p: "Component 3", ms: "Definition of each with example.", ma: "Emic: studies behaviour within culture using culture-specific concepts. Etic: applies concepts universally. Ainsworth's Strange Situation (etic) vs Japanese attachment norms (emic)."},
+{q: "Discuss cultural bias in psychological research.", m: 16, p: "Component 3", ms: "Types, examples, implications, solutions, conclusion.", ma: "Ethnocentrism (Ainsworth), imposed etic (Berry, IQ tests), WEIRD sampling (Henrich). Counter: some findings universal (Ekman emotions). Solutions: indigenous psychologies, cross-cultural methods."},
+{q: "Explain gender bias in psychology.", m: 4, p: "Component 3", ms: "Definition, types, impact.", ma: "Research favouring one gender. Alpha bias: exaggerates differences (Freud). Beta bias: minimises, generalises male findings. Androcentrism: male as norm."},
+{q: "Discuss ethical issues in psychological research.", m: 12, p: "Component 3", ms: "Multiple issues, examples, how addressed.", ma: "Deception (Milgram), informed consent, harm (Zimbardo), withdrawal rights, confidentiality. BPS guidelines, cost-benefit analysis, debriefing."}
+]
+},
+pe: {
+'Energy Systems': [
+{q: "Describe the ATP-PC system and when it is predominantly used.", m: 4, p: "Paper 1", ms: "PC breakdown, creatine kinase, ATP resynthesis, duration, example.", ma: "PC broken down by creatine kinase to resynthesise ATP. Anaerobic, 1 ATP, no fatiguing by-products. Used for high-intensity up to 10 seconds - 100m start, shot put."},
+{q: "Analyse energy system contribution during a 400m race.", m: 8, p: "Paper 1", ms: "All three systems with timing, energy continuum, fatigue.", ma: "ATP-PC dominant first 100m (0-10s). Anaerobic glycolytic dominant 100-350m producing lactate causing tie-up. Aerobic ~15-20% throughout. All work simultaneously - energy continuum."},
+{q: "Describe the anaerobic glycolytic system.", m: 4, p: "Paper 1", ms: "Fuel, process, yield, by-products, duration.", ma: "Uses glycogen/glucose. Glycolysis in sarcoplasm produces pyruvic acid then lactic acid. 2 ATP per glucose. Dominant 10s-3min at high intensity."},
+{q: "Explain EPOC and why it is elevated after exercise.", m: 6, p: "Paper 1", ms: "Definition, fast and slow components.", ma: "Excess Post-exercise Oxygen Consumption. Fast component: restores ATP/PC, re-saturates myoglobin (2-3min). Slow component: removes lactate, maintains elevated HR, tissue repair."},
+{q: "Explain the energy continuum with sporting examples.", m: 6, p: "Paper 1", ms: "Definition, simultaneous systems, varied examples.", ma: "All three systems work simultaneously with different dominance. 100m: ATP-PC. 800m: glycolytic/aerobic mix. Marathon: aerobic. Even marathon uses ATP-PC for finish sprint."},
+{q: "Describe the aerobic system's three stages.", m: 6, p: "Paper 1", ms: "Glycolysis, Krebs, ETC with locations and yield.", ma: "Glycolysis: glucose to pyruvic acid in sarcoplasm (2 ATP). Krebs Cycle: in mitochondria, produces CO2 and hydrogen (2 ATP). Electron Transport Chain: inner mitochondria membrane (34 ATP). Total 38 ATP."},
+{q: "What is lactate threshold and why is it important?", m: 4, p: "Paper 1", ms: "Definition, OBLA, training importance.", ma: "Point where lactate production exceeds removal. OBLA at 4mmol/L. Training at threshold improves tolerance and removal, allowing higher sustained intensities."}
+],
+'Cardiovascular System': [
+{q: "What is cardiac output? Give formula and exercise changes.", m: 4, p: "Paper 1", ms: "Definition, formula, values.", ma: "Volume of blood pumped per minute. Q = HR × SV. Rest: ~5 L/min. Exercise: up to 20-40 L/min as both HR and SV increase."},
+{q: "Describe the cardiac conduction system.", m: 6, p: "Paper 1", ms: "Components in order, functions, control.", ma: "SA node generates impulse causing atrial contraction. AV node delays (0.1s). Bundle of His down septum. Purkinje fibres spread through ventricles. ANS and adrenaline control rate."},
+{q: "Explain the Frank-Starling mechanism.", m: 4, p: "Paper 1", ms: "Description, link to venous return, exercise.", ma: "Increased venous return stretches ventricles causing stronger contraction, increasing stroke volume. During exercise, muscle pump increases venous return, automatically matching output to demand."},
+{q: "Describe blood flow redistribution during exercise.", m: 6, p: "Paper 1", ms: "Vasodilation, vasoconstriction, vascular shunt.", ma: "Blood redirected to muscles via vascular shunt. Vasodilation to skeletal muscles (20% to 80%+). Vasoconstriction to digestive system, kidneys. Pre-capillary sphincters respond to local chemical changes."},
+{q: "What is a-vO2 difference?", m: 4, p: "Paper 1", ms: "Definition, values, significance.", ma: "Difference between arterial and venous oxygen content - how much extracted. Rest: ~5ml O2 per 100ml. Exercise: ~15ml per 100ml. Trained athletes higher due to capillarisation."}
+],
+'Respiratory System': [
+{q: "Define tidal volume, vital capacity, and residual volume.", m: 3, p: "Paper 1", ms: "1 mark per definition.", ma: "Tidal volume: air in/out per breath at rest (~500ml). Vital capacity: max air exhaled after max inhalation. Residual volume: air remaining after max exhalation (~1200ml)."},
+{q: "Explain gaseous exchange at the alveoli.", m: 6, p: "Paper 1", ms: "Diffusion, partial pressures, structural adaptations.", ma: "Diffusion down partial pressure gradients. O2: high in alveoli, low in blood - diffuses in. CO2 opposite. Adaptations: thin walls, moist, large surface area, dense capillaries."},
+{q: "What is minute ventilation and how does it change during exercise?", m: 4, p: "Paper 1", ms: "Definition, formula, values.", ma: "Volume of air per minute. VE = TV × frequency. Rest: 6 L/min. Exercise: both increase, reaching 150+ L/min in trained athletes."}
+],
+'Biomechanics': [
+{q: "Using Newton's Laws, explain sprinter acceleration from blocks.", m: 6, p: "Paper 1", ms: "2 marks per law applied to sprinting.", ma: "1st (Inertia): at rest until force applied. 2nd (F=ma): greater force = greater acceleration. 3rd (Action-reaction): push back on blocks, blocks push forward."},
+{q: "Explain how a diver controls rotation using angular momentum.", m: 4, p: "Paper 1", ms: "L=Iω, conservation, tucking/extending.", ma: "Angular momentum (L=Iω) conserved. Tucking decreases moment of inertia, so angular velocity increases (faster spin). Extending before entry increases I, slows spin."},
+{q: "Define moment of inertia and its effect on rotation.", m: 4, p: "Paper 1", ms: "Definition, formula, sporting example.", ma: "Resistance to rotation. I = Σmr². Mass further from axis = higher I = harder to rotate. Arms spread in gymnastics increases I and slows rotation."},
+{q: "Explain the Bernoulli principle applied to a discus.", m: 4, p: "Paper 1", ms: "Principle explanation and application.", ma: "Faster air has lower pressure. Discus at optimal angle: air faster over top, lower pressure above. Pressure difference creates lift, extending flight."},
+{q: "Calculate force: 75kg athlete, acceleration 4m/s².", m: 2, p: "Paper 1", ms: "Correct formula and answer with units.", ma: "F = ma = 75 × 4 = 300 N"},
+{q: "Calculate momentum: 0.45kg ball at 25m/s.", m: 2, p: "Paper 1", ms: "Correct formula and answer with units.", ma: "p = mv = 0.45 × 25 = 11.25 kg·m/s"},
+{q: "Explain factors affecting shot put distance.", m: 6, p: "Paper 1", ms: "Speed, angle, height of release.", ma: "Speed of release (most important). Angle (optimal 37-42°, less than 45° due to release height). Height of release (taller = longer flight)."}
+],
+'Sport Psychology': [
+{q: "Describe Bandura's four sources of self-efficacy.", m: 4, p: "Paper 2", ms: "1 mark per source.", ma: "Performance accomplishments (strongest). Vicarious experience. Verbal persuasion. Emotional arousal interpretation."},
+{q: "Explain the inverted U theory.", m: 4, p: "Paper 2", ms: "Theory description, optimal arousal, variations.", ma: "Performance increases with arousal to optimal point, then decreases. Optimal varies: lower for complex tasks, higher for simple. Varies by individual."},
+{q: "Describe attribution theory and its effect on motivation.", m: 6, p: "Paper 2", ms: "Weiner's model, effect on motivation, learned helplessness.", ma: "Weiner: locus of causality, stability, controllability. Winners attribute success internally. Learned helplessness: attributing failure to internal, stable, uncontrollable factors."},
+{q: "Evaluate goal setting for motivation.", m: 8, p: "Paper 2", ms: "SMARTER, goal types, evidence, limitations.", ma: "SMARTER goals. Types: outcome, performance, process. Locke & Latham: 16% improvement. Limitations: outcome goals increase anxiety, must review constantly."},
+{q: "Explain intrinsic and extrinsic motivation.", m: 4, p: "Paper 2", ms: "Definitions with examples, sustainability.", ma: "Intrinsic: internal satisfaction - enjoyment. Extrinsic: external rewards - trophies, money. Intrinsic more sustainable; extrinsic can undermine intrinsic."}
+],
+'Skill Acquisition': [
+{q: "Describe Fitts and Posner's three stages of learning.", m: 6, p: "Paper 2", ms: "2 marks per stage.", ma: "Cognitive: understanding, many errors, attention-demanding. Associative: practicing, fewer errors, refining. Autonomous: automatic, few errors, focus on tactics."},
+{q: "Explain positive and negative transfer with examples.", m: 4, p: "Paper 2", ms: "Definition and example of each.", ma: "Positive: one skill helps another - tennis serve helps badminton clear. Negative: one skill hinders another - tennis groundstrokes hinder squash."},
+{q: "Describe types of guidance in coaching.", m: 6, p: "Paper 2", ms: "At least 3 types with appropriate use.", ma: "Visual: demos, video - cognitive stage. Verbal: instructions - supports visual. Manual: physical support - dangerous skills. Mechanical: equipment assistance."},
+{q: "Explain feedback types a coach might give.", m: 4, p: "Paper 2", ms: "Definition, two types described.", ma: "Information about performance. KR (knowledge of results): outcome - 'you scored'. KP (knowledge of performance): movement quality - 'arm too low'. Beginners need KR, experts KP."}
+],
+'Contemporary Issues': [
+{q: "Evaluate commercialisation's impact on a sport.", m: 8, p: "Paper 3", ms: "2+ positives and negatives with examples.", ma: "Football: Positives - TV revenue funds facilities, global exposure. Negatives - TV dictates fixtures, high ticket prices, wealthy clubs dominate, player welfare concerns."},
+{q: "Discuss technology's role in improving performance.", m: 8, p: "Paper 3", ms: "Multiple examples, benefits and drawbacks.", ma: "Analysis (GPS, Hawk-Eye), equipment advances, training monitoring. Benefits: marginal gains, injury prevention. Drawbacks: expense creates inequality, ethical questions."},
+{q: "Discuss arguments for and against performance-enhancing drugs.", m: 8, p: "Paper 3", ms: "Arguments both sides with reasoning.", ma: "Against: health risks, unfair advantage, role models, spirit of sport. For: personal choice, legal supplements allowed, hard to police. Banned to protect health and fair competition."},
+{q: "Explain globalisation's impact on sport.", m: 6, p: "Paper 3", ms: "Positive and negative impacts with examples.", ma: "Positives: global audiences, sport spreading, investment. Negatives: dominant leagues attract talent, smaller leagues struggle, loss of local identity."}
+]
+},
+english: {
+'A Streetcar Named Desire': [
+{q: "Analyse how Williams uses light symbolism.", m: 6, p: "Paper 2", ms: "AO2: Light/dark symbolism with examples. AO3: Context.", ma: "Light symbolises truth - Blanche avoids it revealing age/past. Paper lantern beautifies reality. 'She winces' in bright light. Stanley destroying lantern = destroying illusions."},
+{q: "How does Williams present Stanley and Blanche's conflict?", m: 8, p: "Paper 2", ms: "AO2: Dramatic techniques, language contrast. AO3: Context.", ma: "Contrasting registers: Stanley direct/colloquial, Blanche elaborate/euphemistic. Stanley's physical dominance, Blanche retreats. Old South vs New America. Animalistic vs fragile."},
+{q: "Explore how Williams presents desire.", m: 8, p: "Paper 2", ms: "AO2: Multiple characters, techniques. AO3: 1940s context.", ma: "Sexual desire (Blanche's past, Stanley-Stella), desire for security, illusion vs reality. Streetcars 'Desire' to 'Cemeteries' - destructive potential. Desire vital yet dangerous."},
+{q: "Analyse dramatic techniques showing Blanche's mental deterioration.", m: 8, p: "Paper 2", ms: "AO2: Specific techniques showing progression.", ma: "Varsouviana polka intrudes increasingly. Stage directions show physical decline. Language fragments. Lighting harsher. Climax presented through distorted sound/shadow."},
+{q: "How does Williams present masculinity?", m: 6, p: "Paper 2", ms: "AO2: Stanley's masculinity, contrasts. AO3: Context.", ma: "Stanley: animalistic, territorial, dominant. Contrasts with Mitch's gentleness, Allan's 'weakness'. Critiques toxic masculinity while acknowledging power. Post-war gender roles."},
+{q: "Analyse the play's ending significance.", m: 6, p: "Paper 2", ms: "AO2: Dramatic techniques. Interpretation.", ma: "'Kindness of strangers' - devastating irony. Poker game continues - life goes on. Stella's choice preserves illusions. Morally ambiguous ending."}
+],
+'Things Fall Apart': [
+{q: "Analyse how Achebe uses narrative voice.", m: 6, p: "Paper 3", ms: "AO2: Third-person limited, free indirect discourse, Igbo elements. AO3: Postcolonial.", ma: "Third-person limited aligned with Okonkwo creating sympathy. Free indirect discourse reveals psychology. Igbo proverbs validate oral tradition. Final chapter shift to Commissioner enacts colonial violence."},
+{q: "How does Achebe present Okonkwo's tragic flaw?", m: 6, p: "Paper 3", ms: "AO2: Characterisation techniques. AO3: Culture and colonialism.", ma: "Fear of weakness stated through free indirect discourse. Drives excessive aggression. Personal tragedy and cultural critique - rigid masculinity prevents adaptation, leading to suicide."},
+{q: "Analyse how Achebe presents colonialism's impact.", m: 8, p: "Paper 3", ms: "AO2: Narrative/linguistic techniques. AO3: Essential.", ma: "Gradual narrative accumulation. 'Knife on things that held us together.' Final chapter shift to Commissioner planning 'Pacification of Primitive Tribes' - narrative violence. Novel reclaims coloniser's language."},
+{q: "Explore Achebe's use of Igbo proverbs.", m: 6, p: "Paper 3", ms: "AO2: Examples and effects. AO3: Context.", ma: "Create distinctive prose. Validate wisdom tradition - 'palm-oil with which words are eaten'. Provide communal voice. Politically reclaim oral tradition against colonial dismissal."},
+{q: "How does Achebe present gender in Igbo society?", m: 6, p: "Paper 3", ms: "AO2: Examples with analysis. AO3: Critical distance.", ma: "'His three wives' possessive. Violence normalised. But Earth goddess female, 'motherland' refuge. Ezinma's intelligence. Okonkwo's rejection of 'feminine' contributes to downfall. Neither romanticises nor demonises."},
+{q: "Analyse the novel's title and structure significance.", m: 6, p: "Paper 3", ms: "AO2: Structure and title. Intertextual reference.", ma: "Yeats' 'Second Coming' - universal cultural collapse. Three-part structure mirrors fall. Part 1 establishes culture, Part 2 exile/arrival, Part 3 destruction. Makes readers invest in what's lost."}
+],
+'Poetry Analysis': [
+{q: "Analyse how poets use structure to shape meaning.", m: 8, p: "Paper 2", ms: "AO2: Structural features and effects. AO4: Comparison.", ma: "Stanzaic structure: regular = control, irregular = turbulence. Line length controls pace. Enjambment creates urgency. Caesura for pauses. Structure actively creates meaning."},
+{q: "How do poets use imagery to convey emotion?", m: 6, p: "Paper 2", ms: "AO2: Imagery types with effects. AO4: Some comparison.", ma: "Metaphor creates equivalence. Extended metaphors develop complexity. Simile maintains comparison. Personification gives emotion agency. Sensory imagery creates visceral response."},
+{q: "Analyse foregrounding and deviation in poetry.", m: 6, p: "Paper 2", ms: "AO2: Definition and examples with effects.", ma: "Foregrounding through deviation. Lexical: unusual words. Grammatical: inverted syntax. Graphological: layout. Phonological: sound patterns. Deviations signal significance."}
+],
+'Creative Writing': [
+{q: "Write the opening of a narrative about a significant discovery. (500 words)", m: 24, p: "Paper 3", ms: "AO5: Creativity, voice, structure, language.", ma: "Demonstrate: controlled voice, effective opening, sentence variety, showing not telling, sensory detail, meaningful structure."},
+{q: "Write a commentary on your creative piece.", m: 8, p: "Paper 3", ms: "AO2: Analysis with terminology, explain choices and effects.", ma: "Use precise terminology, explain specific choices with reasoning, analyse intended effects. Avoid vague statements."}
+],
+'Language Analysis': [
+{q: "Analyse how language creates meaning in non-fiction.", m: 8, p: "Paper 1", ms: "AO1: Terminology. AO2: Features and effects. AO3: Context. AO4: Comparison.", ma: "Register, lexical choices, semantic fields, rhetorical devices, sentence types, modality, pronouns. Consider purpose and audience. Context shapes conventions."},
+{q: "Define and exemplify three linguistic terms.", m: 6, p: "Paper 1", ms: "2 marks per term: definition and example.", ma: "Semantic field: related words creating meaning pattern. Deixis: pointing words requiring context. Modality: certainty through modal verbs revealing stance."}
+]
+}
+};
 
-        // App State
-        let currentSubject = 'psychology';
-        let currentQuestion = null;
-        let stats = {
-            attempted: 0,
-            totalMarks: 0,
-            totalPossible: 0,
-            lastAttemptDate: null
-        };
-
-        // Load stats from localStorage
-        function loadStats() {
-            const saved = localStorage.getItem('revisionStats');
-            if (saved) {
-                stats = JSON.parse(saved);
-                updateStatsDisplay();
-            }
-            
-            // Check API key
-            const apiKey = localStorage.getItem('claudeApiKey');
-            if (apiKey) {
-                document.getElementById('apiKeySection').style.display = 'none';
-            }
-        }
-
-        function saveStats() {
-            localStorage.setItem('revisionStats', JSON.stringify(stats));
-            updateStatsDisplay();
-        }
-
-        function updateStatsDisplay() {
-            document.getElementById('questionsAttempted').textContent = stats.attempted;
-            
-            if (stats.totalPossible > 0) {
-                const avg = Math.round((stats.totalMarks / stats.totalPossible) * 100);
-                document.getElementById('averageMark').textContent = avg + '%';
-            }
-            
-            // Calculate streak
-            const today = new Date().toDateString();
-            const lastDate = stats.lastAttemptDate;
-            const yesterday = new Date(Date.now() - 86400000).toDateString();
-            
-            if (lastDate === today) {
-                // Already attempted today, keep streak
-            } else if (lastDate === yesterday) {
-                // Streak continues
-            } else if (lastDate !== today) {
-                // Streak broken (unless first attempt)
-                if (stats.attempted > 0 && lastDate && lastDate !== today) {
-                    stats.streak = 0;
-                }
-            }
-            
-            document.getElementById('streak').textContent = stats.streak || 0;
-        }
-
-        function saveApiKey() {
-            const key = document.getElementById('apiKey').value.trim();
-            if (key.startsWith('sk-ant-')) {
-                localStorage.setItem('claudeApiKey', key);
-                document.getElementById('apiKeySection').style.display = 'none';
-                alert('API key saved! You can now use AI marking.');
-            } else {
-                alert('Please enter a valid Claude API key (starts with sk-ant-)');
-            }
-        }
-
-        function selectSubject(subject) {
-            currentSubject = subject;
-            
-            // Update button states
-            document.querySelectorAll('.subject-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            document.querySelector(`.subject-btn.${subject}`).classList.add('active');
-            
-            // Update topic dropdown
-            const topicSelect = document.getElementById('topicSelect');
-            topicSelect.innerHTML = '<option value="">Select a topic...</option>';
-            
-            const topics = Object.keys(questionBank[subject]);
-            topics.forEach(topic => {
-                const option = document.createElement('option');
-                option.value = topic;
-                option.textContent = topic;
-                topicSelect.appendChild(option);
-            });
-        }
-
-        function loadQuestion() {
-            const topic = document.getElementById('topicSelect').value;
-            if (!topic) return;
-            
-            const questions = questionBank[currentSubject][topic];
-            currentQuestion = questions[Math.floor(Math.random() * questions.length)];
-            
-            document.getElementById('questionMarks').textContent = `[${currentQuestion.marks} marks]`;
-            document.getElementById('questionText').textContent = currentQuestion.question;
-            document.getElementById('answerInput').value = '';
-            document.getElementById('wordCount').textContent = '0';
-            
-            // Hide feedback, show question
-            document.getElementById('feedbackSection').classList.remove('feedback-section');
-            document.getElementById('feedbackSection').classList.add('hidden');
-            document.getElementById('questionSection').classList.remove('hidden');
-        }
-
-        function skipQuestion() {
-            loadQuestion();
-        }
-
-        // Word counter
-        document.getElementById('answerInput').addEventListener('input', function() {
-            const words = this.value.trim().split(/\s+/).filter(w => w.length > 0).length;
-            document.getElementById('wordCount').textContent = words;
-        });
-
-        async function submitAnswer() {
-            const answer = document.getElementById('answerInput').value.trim();
-            
-            if (!answer) {
-                alert('Please write an answer first!');
-                return;
-            }
-            
-            if (answer.split(/\s+/).length < 10) {
-                alert('Your answer seems very short. Try to write more for better feedback!');
-                return;
-            }
-
-            const apiKey = localStorage.getItem('claudeApiKey');
-            
-            // Show loading
-            document.getElementById('questionSection').classList.add('hidden');
-            document.getElementById('loadingSection').classList.remove('hidden');
-            
-            try {
-                let feedback;
-                
-                if (apiKey) {
-                    // Use real Claude API
-                    feedback = await getAIFeedback(answer, apiKey);
-                } else {
-                    // Use simulated feedback
-                    feedback = simulateFeedback(answer);
-                }
-                
-                displayFeedback(feedback);
-                
-                // Update stats
-                stats.attempted++;
-                stats.totalMarks += feedback.mark;
-                stats.totalPossible += currentQuestion.marks;
-                stats.lastAttemptDate = new Date().toDateString();
-                stats.streak = (stats.streak || 0) + 1;
-                saveStats();
-                
-            } catch (error) {
-                console.error('Error:', error);
-                alert('Error getting feedback. Using offline mode.');
-                const feedback = simulateFeedback(answer);
-                displayFeedback(feedback);
-            }
-            
-            // Hide loading, show feedback
-            document.getElementById('loadingSection').classList.add('hidden');
-            document.getElementById('feedbackSection').classList.remove('hidden');
-            document.getElementById('feedbackSection').classList.add('feedback-section', 'visible');
-        }
-
-        async function getAIFeedback(answer, apiKey) {
-            const prompt = `You are an experienced A-Level examiner marking a student's answer. Be encouraging but honest.
-
-QUESTION: ${currentQuestion.question}
-MARKS AVAILABLE: ${currentQuestion.marks}
-MARK SCHEME: ${currentQuestion.markScheme}
-MODEL ANSWER: ${currentQuestion.modelAnswer}
-
-STUDENT'S ANSWER:
-${answer}
-
-Please mark this answer and provide feedback. Respond in this exact JSON format:
-{
-    "mark": <number between 0 and ${currentQuestion.marks}>,
-    "strengths": ["strength 1", "strength 2"],
-    "improvements": ["improvement 1", "improvement 2"],
-    "missingPoints": ["key point they could add 1", "key point 2"],
-    "overallComment": "Brief encouraging comment about their answer"
+// Convert shorthand to full format
+function expandQ(q) {
+    return { question: q.q, marks: q.m, paper: q.p, markScheme: q.ms, modelAnswer: q.ma };
 }
 
-Be fair but rigorous. Award marks only for points that genuinely meet the mark scheme criteria. Identify specific strengths from their answer, specific areas for improvement, and key points from the mark scheme they missed.`;
+const questionBankFull = {};
+for (const subject in questionBank) {
+    questionBankFull[subject] = {};
+    for (const topic in questionBank[subject]) {
+        questionBankFull[subject][topic] = questionBank[subject][topic].map(expandQ);
+    }
+}
 
-            const response = await fetch('https://api.anthropic.com/v1/messages', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'x-api-key': apiKey,
-                    'anthropic-version': '2023-06-01',
-                    'anthropic-dangerous-direct-browser-access': 'true'
-                },
-                body: JSON.stringify({
-                    model: 'claude-sonnet-4-20250514',
-                    max_tokens: 1024,
-                    messages: [{
-                        role: 'user',
-                        content: prompt
-                    }]
-                })
-            });
-
-            if (!response.ok) {
-                throw new Error('API request failed');
-            }
-
-            const data = await response.json();
-            const content = data.content[0].text;
-            
-            // Parse JSON from response
-            const jsonMatch = content.match(/\{[\s\S]*\}/);
-            if (jsonMatch) {
-                return JSON.parse(jsonMatch[0]);
-            }
-            throw new Error('Could not parse response');
+function countQuestions() {
+    let total = 0;
+    for (const subject in questionBankFull) {
+        for (const topic in questionBankFull[subject]) {
+            total += questionBankFull[subject][topic].length;
         }
+    }
+    return total;
+}
 
-        function simulateFeedback(answer) {
-            // Simple heuristic-based feedback when no API key
-            const wordCount = answer.split(/\s+/).length;
-            const hasEvidence = /research|study|found|showed|evidence/i.test(answer);
-            const hasEvaluation = /however|strength|weakness|limitation|advantage|disadvantage/i.test(answer);
-            const hasExamples = /example|for instance|such as|e\.g\./i.test(answer);
-            
-            let mark = 0;
-            const maxMark = currentQuestion.marks;
-            
-            // Basic marking heuristics
-            if (wordCount > 50) mark += maxMark * 0.2;
-            if (wordCount > 100) mark += maxMark * 0.15;
-            if (hasEvidence) mark += maxMark * 0.25;
-            if (hasEvaluation) mark += maxMark * 0.25;
-            if (hasExamples) mark += maxMark * 0.15;
-            
-            mark = Math.min(Math.round(mark), maxMark);
-            
-            const strengths = [];
-            const improvements = [];
-            
-            if (wordCount > 80) strengths.push("Good level of detail in your response");
-            if (hasEvidence) strengths.push("You included research evidence to support your points");
-            if (hasEvaluation) strengths.push("You showed evaluation skills");
-            if (hasExamples) strengths.push("Good use of examples");
-            
-            if (!hasEvidence) improvements.push("Include specific research evidence (researcher names, dates, findings)");
-            if (!hasEvaluation) improvements.push("Add evaluation - discuss strengths and limitations");
-            if (wordCount < 80) improvements.push("Develop your points with more detail");
-            if (!hasExamples) improvements.push("Use specific examples to illustrate your points");
-            
-            return {
-                mark: mark,
-                strengths: strengths.length > 0 ? strengths : ["You attempted the question - keep practicing!"],
-                improvements: improvements,
-                missingPoints: ["Compare model answer below for key points to include"],
-                overallComment: "Note: This is simplified feedback. Add your Claude API key for detailed AI marking!"
-            };
-        }
+let currentSubject = 'psychology';
+let currentQuestion = null;
+let usedQuestions = new Set();
+let stats = { attempted: 0, totalMarks: 0, totalPossible: 0, lastAttemptDate: null, streak: 0 };
 
-        function displayFeedback(feedback) {
-            // Display mark
-            document.getElementById('markAwarded').textContent = feedback.mark;
-            document.getElementById('markTotal').textContent = currentQuestion.marks;
-            
-            // Calculate percentage and grade
-            const percentage = (feedback.mark / currentQuestion.marks) * 100;
-            const gradeIndicator = document.getElementById('gradeIndicator');
-            gradeIndicator.className = 'grade-indicator';
-            
-            if (percentage >= 80) {
-                gradeIndicator.textContent = 'Grade A Standard ⭐';
-                gradeIndicator.classList.add('grade-a');
-            } else if (percentage >= 70) {
-                gradeIndicator.textContent = 'Grade B Standard';
-                gradeIndicator.classList.add('grade-b');
-            } else if (percentage >= 60) {
-                gradeIndicator.textContent = 'Grade C Standard';
-                gradeIndicator.classList.add('grade-c');
-            } else if (percentage >= 50) {
-                gradeIndicator.textContent = 'Grade D Standard';
-                gradeIndicator.classList.add('grade-d');
-            } else {
-                gradeIndicator.textContent = 'Needs Improvement';
-                gradeIndicator.classList.add('grade-e');
-            }
-            
-            // Display feedback sections
-            document.getElementById('strengthsFeedback').innerHTML = 
-                '<ul>' + feedback.strengths.map(s => `<li>${s}</li>`).join('') + '</ul>' +
-                (feedback.overallComment ? `<p style="margin-top:10px;font-style:italic;">${feedback.overallComment}</p>` : '');
-            
-            document.getElementById('improvementsFeedback').innerHTML = 
-                '<ul>' + feedback.improvements.map(i => `<li>${i}</li>`).join('') + '</ul>';
-            
-            document.getElementById('modelPointsFeedback').innerHTML = 
-                '<ul>' + feedback.missingPoints.map(p => `<li>${p}</li>`).join('') + '</ul>';
-            
-            // Display mark scheme
-            document.getElementById('markSchemeContent').innerHTML = 
-                `<p><strong>Mark Scheme:</strong> ${currentQuestion.markScheme}</p>
-                <p style="margin-top:10px;"><strong>Model Answer:</strong> ${currentQuestion.modelAnswer}</p>`;
-        }
+function loadStats() {
+    const saved = localStorage.getItem('revisionStatsV3');
+    if (saved) stats = JSON.parse(saved);
+    updateStatsDisplay();
+    const apiKey = localStorage.getItem('claudeApiKey');
+    if (apiKey) document.getElementById('apiKeySection').style.display = 'none';
+    document.getElementById('totalQuestions').textContent = countQuestions();
+}
 
-        function nextQuestion() {
-            document.getElementById('feedbackSection').classList.remove('visible');
-            document.getElementById('feedbackSection').classList.add('hidden');
-            document.getElementById('questionSection').classList.remove('hidden');
-            loadQuestion();
-        }
+function saveStats() {
+    localStorage.setItem('revisionStatsV3', JSON.stringify(stats));
+    updateStatsDisplay();
+}
 
-        // Initialize
-        loadStats();
-        selectSubject('psychology');
-    </script>
+function updateStatsDisplay() {
+    document.getElementById('questionsAttempted').textContent = stats.attempted;
+    if (stats.totalPossible > 0) {
+        document.getElementById('averageMark').textContent = Math.round((stats.totalMarks / stats.totalPossible) * 100) + '%';
+    }
+    document.getElementById('streak').textContent = stats.streak || 0;
+}
+
+function saveApiKey() {
+    const key = document.getElementById('apiKey').value.trim();
+    if (key.startsWith('sk-ant-')) {
+        localStorage.setItem('claudeApiKey', key);
+        document.getElementById('apiKeySection').style.display = 'none';
+        alert('API key saved!');
+    } else {
+        alert('Please enter a valid Claude API key');
+    }
+}
+
+function selectSubject(subject) {
+    currentSubject = subject;
+    document.querySelectorAll('.subject-btn').forEach(btn => btn.classList.remove('active'));
+    document.querySelector(`.subject-btn.${subject}`).classList.add('active');
+    const topicSelect = document.getElementById('topicSelect');
+    topicSelect.innerHTML = '<option value="">Select a topic...</option><option value="random">🎲 Random from all topics</option>';
+    Object.keys(questionBankFull[subject]).forEach(topic => {
+        const count = questionBankFull[subject][topic].length;
+        const option = document.createElement('option');
+        option.value = topic;
+        option.textContent = `${topic} (${count} Qs)`;
+        topicSelect.appendChild(option);
+    });
+}
+
+function loadQuestion() {
+    const topicValue = document.getElementById('topicSelect').value;
+    if (!topicValue) return;
+    let questions, topic;
+    if (topicValue === 'random') {
+        const topics = Object.keys(questionBankFull[currentSubject]);
+        topic = topics[Math.floor(Math.random() * topics.length)];
+        questions = questionBankFull[currentSubject][topic];
+    } else {
+        topic = topicValue;
+        questions = questionBankFull[currentSubject][topic];
+    }
+    currentQuestion = questions[Math.floor(Math.random() * questions.length)];
+    currentQuestion._topic = topic;
+    document.getElementById('questionMarks').textContent = `[${currentQuestion.marks} marks]`;
+    document.getElementById('paperTag').textContent = currentQuestion.paper;
+    document.getElementById('questionText').textContent = currentQuestion.question;
+    document.getElementById('answerInput').value = '';
+    document.getElementById('wordCount').textContent = '0';
+    document.getElementById('questionCount').textContent = `Topic: ${topic}`;
+    document.getElementById('feedbackSection').classList.remove('visible');
+    document.getElementById('feedbackSection').classList.add('hidden');
+    document.getElementById('questionSection').classList.remove('hidden');
+}
+
+function skipQuestion() { loadQuestion(); }
+
+document.getElementById('answerInput').addEventListener('input', function() {
+    const words = this.value.trim().split(/\s+/).filter(w => w.length > 0).length;
+    document.getElementById('wordCount').textContent = words;
+});
+
+async function submitAnswer() {
+    const answer = document.getElementById('answerInput').value.trim();
+    if (!answer) { alert('Please write an answer!'); return; }
+    if (answer.split(/\s+/).length < 10 && !confirm('Answer is short. Submit anyway?')) return;
+    
+    const apiKey = localStorage.getItem('claudeApiKey');
+    document.getElementById('questionSection').classList.add('hidden');
+    document.getElementById('loadingSection').classList.remove('hidden');
+    
+    let feedback;
+    try {
+        feedback = apiKey ? await getAIFeedback(answer, apiKey) : simulateFeedback(answer);
+    } catch (e) {
+        feedback = simulateFeedback(answer);
+    }
+    
+    displayFeedback(feedback);
+    stats.attempted++;
+    stats.totalMarks += feedback.mark;
+    stats.totalPossible += currentQuestion.marks;
+    const today = new Date().toDateString();
+    if (stats.lastAttemptDate !== today) {
+        stats.streak = (stats.lastAttemptDate === new Date(Date.now() - 86400000).toDateString()) ? stats.streak + 1 : 1;
+        stats.lastAttemptDate = today;
+    }
+    saveStats();
+    document.getElementById('loadingSection').classList.add('hidden');
+    document.getElementById('feedbackSection').classList.remove('hidden');
+    document.getElementById('feedbackSection').classList.add('visible');
+}
+
+async function getAIFeedback(answer, apiKey) {
+    const prompt = `You are an A-Level examiner. Mark this answer fairly but rigorously.
+QUESTION: ${currentQuestion.question}
+MARKS: ${currentQuestion.marks}
+MARK SCHEME: ${currentQuestion.markScheme}
+MODEL ANSWER: ${currentQuestion.modelAnswer}
+STUDENT ANSWER: ${answer}
+
+Respond ONLY with JSON: {"mark": <0-${currentQuestion.marks}>, "strengths": ["...", "..."], "improvements": ["...", "..."], "missingPoints": ["...", "..."], "overallComment": "..."}`;
+    
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-api-key': apiKey, 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
+        body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 1024, messages: [{ role: 'user', content: prompt }] })
+    });
+    const data = await response.json();
+    const match = data.content[0].text.match(/\{[\s\S]*\}/);
+    return match ? JSON.parse(match[0]) : simulateFeedback(answer);
+}
+
+function simulateFeedback(answer) {
+    const wc = answer.split(/\s+/).length;
+    const lower = answer.toLowerCase();
+    const hasEvidence = /research|study|found|\d{4}/.test(lower);
+    const hasEval = /however|strength|weakness|limitation/.test(lower);
+    const hasEx = /example|e\.g\.|such as/.test(lower);
+    let mark = 0;
+    const max = currentQuestion.marks;
+    if (wc > 30) mark += max * 0.15;
+    if (wc > 60) mark += max * 0.1;
+    if (wc > 100) mark += max * 0.1;
+    if (hasEvidence) mark += max * 0.25;
+    if (hasEval) mark += max * 0.2;
+    if (hasEx) mark += max * 0.15;
+    mark = Math.min(Math.round(mark), max);
+    const strengths = [], improvements = [];
+    if (wc > 50) strengths.push("Good detail");
+    if (hasEvidence) strengths.push("Included evidence");
+    if (hasEval) strengths.push("Showed evaluation");
+    if (hasEx) strengths.push("Used examples");
+    if (!hasEvidence) improvements.push("Add research evidence");
+    if (!hasEval && max >= 6) improvements.push("Add evaluation");
+    if (wc < 50) improvements.push("Develop points more");
+    if (!hasEx) improvements.push("Use examples");
+    if (!strengths.length) strengths.push("Good attempt!");
+    return { mark, strengths, improvements: improvements.slice(0, 3), missingPoints: ["See model answer"], overallComment: "Basic marking - add API key for detailed feedback" };
+}
+
+function displayFeedback(fb) {
+    document.getElementById('markAwarded').textContent = fb.mark;
+    document.getElementById('markTotal').textContent = currentQuestion.marks;
+    const pct = (fb.mark / currentQuestion.marks) * 100;
+    const gi = document.getElementById('gradeIndicator');
+    gi.className = 'grade-indicator';
+    if (pct >= 80) { gi.textContent = 'Grade A ⭐'; gi.classList.add('grade-a'); }
+    else if (pct >= 70) { gi.textContent = 'Grade B'; gi.classList.add('grade-b'); }
+    else if (pct >= 60) { gi.textContent = 'Grade C'; gi.classList.add('grade-c'); }
+    else if (pct >= 50) { gi.textContent = 'Grade D'; gi.classList.add('grade-d'); }
+    else { gi.textContent = 'Keep Practicing'; gi.classList.add('grade-e'); }
+    document.getElementById('strengthsFeedback').innerHTML = '<ul>' + fb.strengths.map(s => `<li>${s}</li>`).join('') + '</ul><p style="margin-top:10px;font-style:italic;">' + (fb.overallComment || '') + '</p>';
+    document.getElementById('improvementsFeedback').innerHTML = '<ul>' + fb.improvements.map(i => `<li>${i}</li>`).join('') + '</ul>';
+    document.getElementById('modelPointsFeedback').innerHTML = '<ul>' + fb.missingPoints.map(p => `<li>${p}</li>`).join('') + '</ul>';
+    document.getElementById('markSchemeContent').innerHTML = `<p><strong>Mark Scheme:</strong> ${currentQuestion.markScheme}</p><p style="margin-top:15px;"><strong>Model Answer:</strong> ${currentQuestion.modelAnswer}</p>`;
+}
+
+function nextQuestion() {
+    document.getElementById('feedbackSection').classList.remove('visible');
+    document.getElementById('feedbackSection').classList.add('hidden');
+    document.getElementById('questionSection').classList.remove('hidden');
+    loadQuestion();
+}
+
+loadStats();
+selectSubject('psychology');
+
+</script>
 </body>
 </html>
